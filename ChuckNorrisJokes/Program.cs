@@ -20,7 +20,7 @@ namespace ChuckNorrisJokes
             do
             {
                 await program.getChuckNorrisJokes();
-            } while (Console.ReadKey().Key == ConsoleKey.J);
+            } while (Console.ReadKey(true).Key == ConsoleKey.J);
         }
 
         /// <summary>
