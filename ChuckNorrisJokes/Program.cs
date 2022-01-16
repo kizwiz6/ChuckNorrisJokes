@@ -3,6 +3,8 @@ using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Web.Caching;
 
 namespace ChuckNorrisJokes
 {
@@ -11,11 +13,24 @@ namespace ChuckNorrisJokes
         HttpClient client = new HttpClient();
         static async Task Main(string[] args)
         {
+            Introduction();
             Program program = new Program();
             await program.getChuckNorrisJokes();
-            ReadKeys();
+            Console.WriteLine("\n\n If you would like a new joke, press Enter and then 'J' \n");
+            do
+            {
+                await program.getChuckNorrisJokes();
+            } while (Console.ReadKey().Key == ConsoleKey.J);
         }
 
+        /// <summary>
+        ///
+        /// Sets a string response variable to retrieve parsed data via GET request and converts this data into a string by GetStringAsync which returns the Task.
+        /// The await handles the Task object to return the string into the declaraed response variable.
+        /// Deserialises the JSON data into the variable ChuckNorrisJoke.
+        /// Calls the ChuckNorrisJoke 'value' property (from the Jokes class).
+        /// </summary>
+        /// <returns></returns>
         private async Task getChuckNorrisJokes()
         {
             string response = await client.GetStringAsync("https://api.chucknorris.io/jokes/random");
@@ -25,73 +40,27 @@ namespace ChuckNorrisJokes
             Console.WriteLine(ChuckNorrisJoke.value);
 
             Console.ReadLine();
+
         }
 
         /// <summary>
-        /// ReadKeys method used for controlling the application by getting the characters pressed by the user.
+        /// Introduction for the start of the console applicaiton, which uses a message box to engage with the client for confirmation as to whether they want to proceed with the application.
         /// </summary>
-        public static void ReadKeys()
-
+        ///
+        public static void Introduction()
         {
-            /// ConsoleKey Info object assigned to the keyInfo variable
-            ConsoleKeyInfo keyInfo;
-            StringBuilder sb = new StringBuilder();
+            Console.WriteLine("Are you ready for Chuck Norris jokes? \n");
 
-            // Uses a do while loop
-            do
+            DialogResult result = MessageBox.Show("Are you sure?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
             {
-                /// Reading the Console.ReadKey Method
-                keyInfo = Console.ReadKey();
-
-                /// Switch that switches on the key that was typed
-                switch (keyInfo.Key)
-                {
-                    case ConsoleKey.A:
-                    case ConsoleKey.B:
-                    case ConsoleKey.C:
-                    case ConsoleKey.D:
-                    case ConsoleKey.E:
-                    case ConsoleKey.F:
-                    case ConsoleKey.G:
-                    case ConsoleKey.H:
-                    case ConsoleKey.I:
-                    case ConsoleKey.J:
-                    case ConsoleKey.K:
-                    case ConsoleKey.L:
-                    case ConsoleKey.M:
-                    case ConsoleKey.N:
-                    case ConsoleKey.O:
-                    case ConsoleKey.P:
-                    case ConsoleKey.Q:
-                    case ConsoleKey.R:
-                    case ConsoleKey.S:
-                    case ConsoleKey.T:
-                    case ConsoleKey.U:
-                    case ConsoleKey.V:
-                    case ConsoleKey.W:
-                    case ConsoleKey.X:
-                    case ConsoleKey.Y:
-                    case ConsoleKey.Z:
-                    case ConsoleKey.OemPeriod:
-                    case ConsoleKey.OemComma:
-                    case ConsoleKey.Spacebar:
-                        {
-                            sb.Append(keyInfo.KeyChar);
-                            break;
-                        }
-                    case ConsoleKey.Enter:
-                        {
-                            Console.WriteLine();
-                            Console.WriteLine(sb.ToString());
-                            sb.Clear();
-                            break;
-                        }
-                    default: break;
-                }
-
-            } while (keyInfo.Key != ConsoleKey.Escape);
-
-
+                Console.Write("Yes. \n\n");
+            }
+            else
+            {
+                Environment.Exit(-1);
+            }
         }
+
     }
 }
