@@ -16,15 +16,15 @@ namespace ChuckNorrisJokes
             Introduction();
             Program program = new Program();
             await program.getChuckNorrisJokes();
-            Console.WriteLine("\n\n If you would like a new joke, press Enter and then 'J' \n");
+            Console.WriteLine("\n\n If you would like a new joke, press 'J' \n");
             do
             {
                 await program.getChuckNorrisJokes();
             } while (Console.ReadKey(true).Key == ConsoleKey.J);
+            Console.ReadLine();
         }
 
         /// <summary>
-        ///
         /// Sets a string response variable to retrieve parsed data via GET request and converts this data into a string by GetStringAsync which returns the Task.
         /// The await handles the Task object to return the string into the declaraed response variable.
         /// Deserialises the JSON data into the variable ChuckNorrisJoke.
@@ -38,15 +38,11 @@ namespace ChuckNorrisJokes
             var ChuckNorrisJoke = JsonConvert.DeserializeObject<Jokes>(response);
 
             Console.WriteLine(ChuckNorrisJoke.value);
-
-            Console.ReadLine();
-
         }
 
         /// <summary>
         /// Introduction for the start of the console applicaiton, which uses a message box to engage with the client for confirmation as to whether they want to proceed with the application.
         /// </summary>
-        ///
         public static void Introduction()
         {
             Console.WriteLine("Are you ready for Chuck Norris jokes? \n");
